@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic&amp;subset=latin,cyrillic,greek,latin-ext&amp;display=swap"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://unpkg.com/alpinejs" defer></script>
+  </head>
+
+  <body>
+    <div
+      class="bg-fundo"
+      :class="passo === 11? 'bg-fim':'bg-inicio'"
+      x-data="{passo: 0, itens, resultado}"
+    >
+      <!---Impotante--->
+      <div class="space">
+        <header class="header" x-ref="inicio" x-show="passo === 0">
+          <h1 class="text-sigla">IBC</h1>
+          <h2 class="text-teste">Teste de Personalidade</h2>
+          <img class="img-gif rounded-full" alt="" />
+          <button
+            x-on:click="$refs.inicio.remove(); passo++"
+            class="btt-iniciar hover:bg-ariel3 transition-all"
+          >
+            Iniciar
+          </button>
+        </header>
+
+        <template x-for="(item, i) in itens" :key="i">
+          <section
+            class="bloco"
+            x-data="{ escolha: '' }"
+            x-show="passo === i+1"
+          >
+            <div class="question_top">
+              <div class="numeracao">
+                <div class="border_number">
+                  <div class="number" x-text="item.numero"></div>
+                </div>
+                <div class="border_number number_menor">
+                  <div class="total">/25</div>
+                </div>
+              </div>
+              <h2 class="pergunta" x-text="item.pergunta"></h2>
+            </div>
+            <div class="question_middle">
+              <template x-for="resposta in item.respostas">
+                <label
+                  class="opcao-resposta"
+                  :class="{ 'active': escolha === resposta.valor }"
+                >
+                  <input
+                    type="radio"
+                    :value="resposta.valor"
+                    x-model="escolha"
+                  />
+                  <span x-text="resposta.texto"></span>
+                </label>
+              </template>
+            </div>
+            <div class="question_bottom">
+              <button class="btt voltar transition-all disabled:opacity-60">
+                Voltar
+              </button>
+              <button
+                class="btt pular transition-all disabled:opacity-60"
+                id="'btn-result'"
+                @click="$store.escolhas.listaDeEscolhas[i] = escolha; passo === 10 && (resultado = $store.escolhas.resultado()); passo++;"
+                :disabled="!escolha"
+              >
+                <!---Impotante--->
+                Pular
+              </button>
+            </div>
+          </section>
+        </template>
+
+        <section class="caixa" x-show="passo === 11">
+          <div class="bloco-resposta">
+            <div
+              class="div-emcima"
+              :style="`background-color: ${resultado.corFundo}`"
+            >
+              <span class="span-ranking"
+                ><p class="p-ranking" x-text="resultado.dados"></p
+              ></span>
+              <img
+                class="img-avatar shadow-md"
+                :src="resultado.avatar"
+                :style="`border-color: ${resultado.corBorda}`"
+              />
+              <a class="link-pag" :href="resultado.link" target="_blank"
+                >Saiba mais</a
+              >
+            </div>
+            <div class="div-debaixo">
+              <h2>
+                seu perfil é
+                <span
+                  class="span-nome"
+                  x-text="resultado.nome"
+                  :style="`background-color: ${resultado.corBorda}`"
+                >
+                </span>
+              </h2>
+              <h3 class="span-lema">
+                <span
+                  class="span-lema"
+                  x-text="resultado.titulo"
+                  :style="`background-color: ${resultado.corBorda};`"
+                >
+                </span>
+              </h3>
+              <p class="desc" x-text="resultado.bio"></p>
+            </div>
+          </div>
+
+          <div class="fila">
+            <div class="row">
+              <div
+                class="div-emcima"
+                :style="`background-color: ${resultado.corFundo}`"
+              >
+                <span class="span-ranking"
+                  ><p class="p-ranking" x-text="resultado.dados"></p
+                ></span>
+                <img
+                  class="img-avatar shadow-md"
+                  :src="resultado.avatar"
+                  :style="`border-color: ${resultado.corBorda}`"
+                />
+                <a class="link-pag" :href="resultado.link" target="_blank"
+                  >Saiba mais</a
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="div-emcima"
+                :style="`background-color: ${resultado.corFundo}`"
+              >
+                <span class="span-ranking"
+                  ><p class="p-ranking" x-text="resultado.dados"></p
+                ></span>
+                <img
+                  class="img-avatar shadow-md"
+                  :src="resultado.avatar"
+                  :style="`border-color: ${resultado.corBorda}`"
+                />
+                <a class="link-pag" :href="resultado.link" target="_blank"
+                  >Saiba mais</a
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="div-emcima"
+                :style="`background-color: ${resultado.corFundo}`"
+              >
+                <span class="span-ranking"
+                  ><p class="p-ranking" x-text="resultado.dados"></p
+                ></span>
+                <img
+                  class="img-avatar shadow-md"
+                  :src="resultado.avatar"
+                  :style="`border-color: ${resultado.corBorda}`"
+                />
+                <a class="link-pag" :href="resultado.link" target="_blank"
+                  >Saiba mais</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script></script>
+  </body>
+</html>
